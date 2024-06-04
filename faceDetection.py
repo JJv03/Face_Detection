@@ -1,33 +1,33 @@
-import cv2 # Módulo OpenCV: una biblioteca de visión por computadora
-import sys # Módulo Sys: acceso a variables del intérprete de Python
+import cv2 # OpenCV module: a computer vision library
+import sys # Sys module: access to Python interpreter variables
 
 print("Press \"q\" to exit the program")
 
-# Obtener la ruta del archivo de cascada Haar, en caso de no proporcionar una concreta se usa la default
+# Get the Haar cascade file path, use the default if none is provided
 cascPath = sys.argv[1] if len(sys.argv) > 1 else 'haarcascade_frontalface_default.xml'
 
-# Crear el objeto CascadeClassifier
+# Create the CascadeClassifier object
 faceCascade = cv2.CascadeClassifier(cascPath)
 
-# Iniciar la captura de video, el 0 hace referencia a la cámaro por defecto del sistema
+# Start video capture, 0 refers to the system's default camera
 video_capture = cv2.VideoCapture(0)
 
-# Verificar si la captura de video se inició correctamente
+# Check if video capture was successfully initialized
 if not video_capture.isOpened():
-    print("Error: No se pudo abrir la cámara.")
+    print("Error: Could not open the camera.")
     sys.exit()
 
 while True:
-    # Capturar frame por frame (ret: valor bool que indica si la captura fue exitosa)
+    # Capture frame by frame (ret: boolean value indicating if the capture was successful)
     ret, frame = video_capture.read()
     if not ret:
-        print("Error: No se pudo leer el frame.")
+        print("Error: Could not read the frame.")
         break
 
-    # Convierte el frame a escala de grises porque así la detección funciona mejor
+    # Convert the frame to grayscale because detection works better that way
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    # Detección de rostros en la imagen en escala de grises
+    # Face detection in the grayscale image
     faces = faceCascade.detectMultiScale(
         gray,
         scaleFactor=1.1,
@@ -36,17 +36,17 @@ while True:
         flags=cv2.CASCADE_SCALE_IMAGE
     )
 
-    # Dibujar un rectángulo alrededor de las caras detectadas
+    # Draw a rectangle around the detected faces
     for (x, y, w, h) in faces:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-    # Mostrar el frame resultante
+    # Display the resulting frame
     cv2.imshow('Video', frame)
 
-    # Salir del loop si se presiona 'q'
+    # Exit the loop if 'q' is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Liberar la captura cuando todo está hecho
+# Release the capture when everything is done
 video_capture.release()
 cv2.destroyAllWindows()
