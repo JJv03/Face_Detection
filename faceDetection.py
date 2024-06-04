@@ -1,7 +1,7 @@
 import cv2 # OpenCV module: a computer vision library
 import sys # Sys module: access to Python interpreter variables
 
-print("Press \"q\" to exit the program")
+print("Press \'esc\' to exit the program")
 
 # Get the Haar cascade file path, use the default if none is provided
 cascPath = sys.argv[1] if len(sys.argv) > 1 else 'haarcascade_frontalface_default.xml'
@@ -43,8 +43,8 @@ while True:
     # Display the resulting frame
     cv2.imshow('Video', frame)
 
-    # Exit the loop if 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    # Exit the loop if 'esc' is pressed
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 # Release the capture when everything is done
